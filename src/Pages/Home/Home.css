@@ -1,0 +1,64 @@
+.home-autocomplete-input-main{
+    display: flex;
+    min-width: 100%;
+    gap: 30px;
+    flex-wrap: wrap;
+    align-items: center;
+
+}
+.autocomp-input {
+    font-size: 14px;
+}
+.autocomp-input input{
+    height: 0.6rem;
+}
+.autocomp-input label{
+    top: -6.5px;
+}
+
+.add-new-cm-dialog .css-1t1j96h-MuiPaper-root-MuiDialog-paper{
+    max-width: fit-content !important;
+}
+
+.add-new-dialog-content{   
+    justify-content: space-around;
+}
+.add-new-dialog-content > *{  
+    flex-basis: 45%;
+}
+
+.home-table{
+    margin-top: 7vh;
+    height: 400px;
+    width: 100%;
+}
+.home-table  .MuiDataGrid-columnHeaders{
+    background-color: rgb(29, 29, 29);
+    color: rgb(255, 255, 255);
+
+}
+.home-table .MuiDataGrid-menuIcon > button{
+    color: white;
+}
+.home-table .MuiDataGrid-iconButtonContainer > button{
+    color: white;
+}
+
+.edit-radio-dialog-input-main{
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.css-1jbbcbn-MuiDataGrid-columnHeaderTitle{
+    white-space:unset !important;
+
+
+}
+.css-1e2bxag-MuiDataGrid-root .MuiDataGrid-columnHeaderTitleContainer{
+    white-space: unset !important;
+    line-height: 20px;
+}
+.MuiDataGrid-cellContent{
+    white-space: break-spaces;
+}
