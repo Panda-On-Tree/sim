@@ -96,3 +96,24 @@ margin: 0;
   padding: 16px 24px 16px 24px !important;
   font-family: Roboto;
 }
+
+.css-ubpweo-MuiPaper-root-MuiPopover-paper{
+  min-width: 50vw !important;
+  max-width: 50vw !important;
+  right: 10px;
+}
+
+@media only screen and (max-width:900px){
+  .css-ubpweo-MuiPaper-root-MuiPopover-paper{
+    min-width: 60vw !important;
+    max-width: 60vw !important;
+    right: 10px;
+  }
+}
+@media only screen and (max-width:600px){
+  .css-ubpweo-MuiPaper-root-MuiPopover-paper{
+    min-width: 70vw !important;
+    max-width: 70vw !important;
+    right: 10px;
+  }
+}

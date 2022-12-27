@@ -70,3 +70,8 @@
     text-decoration: none;
     color: var(--sl-color-neutral-700);
 }
+
+
+.nav-item-alternate::part(caret){
+    display: none;
+}

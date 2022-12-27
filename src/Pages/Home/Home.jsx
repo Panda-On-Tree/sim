@@ -386,18 +386,18 @@ const getHistory = (id) => {
       name: "id",
       label: "Sr. No.",
     }, */
-    { name: "product_name", label: "Product Name", options: { filter: true, sort: false } },
-    { name: "product_code", label: "Product Code", options: { filter: true, sort: false } },
-    { name: "model_name", label: "Model Name", options: { filter: true, sort: false } },
-    { name: "model_code", label: "Model Code", options: { filter: true, sort: false } },
-    { name: "sap_part_code", label: "SAP Part Code", options: { filter: true, sort: false } },
-    { name: "combo_code", label: "Combo Code", options: { filter: true, sort: false } },
-    { name: "combo_id", label: "Combo ID", options: { filter: false, sort: false , display:false} },
-    { name: "socket_type", label: "Socket Type", options: { filter: true, sort: false } },
-    { name: "bom_type", label: "Bom Type", options: { filter: false, sort: false, display: false } },
-    { name: "combo_description", label: "Combo Description", options: { filter: false, sort: false } },
-    { name: "ecn_mjo_number", label: "ECN No.", options: { filter: true, sort: false } },
-    { name: "ecn_impl_date", label: "ECN Date", options: { filter: true, sort: false } },
+    { name: "product_name", label: "Product Name", options: { filter: true, sort: true,filterType :'textField' } },
+    { name: "product_code", label: "Product Code", options: { filter: true, sort: true } },
+    { name: "model_name", label: "Model Name", options: { filter: true, sort: true } },
+    { name: "model_code", label: "Model Code", options: { filter: true, sort: true } },
+    { name: "sap_part_code", label: "SAP Part Code", options: { filter: true, sort: true } },
+    { name: "combo_code", label: "Combo Code", options: { filter: true, sort: true } },
+    { name: "combo_id", label: "Combo ID", options: { filter: false, sort: true , display:false} },
+    { name: "socket_type", label: "Socket Type", options: { filter: true, sort: true } },
+    { name: "bom_type", label: "Bom Type", options: { filter: false, sort: true, display: false } },
+    { name: "combo_description", label: "Combo Description", options: { filter: false, sort: true } },
+    { name: "ecn_mjo_number", label: "ECN No.", options: { filter: true, sort: true } },
+    { name: "ecn_impl_date", label: "ECN Date", options: { filter: true, sort: true } },
     {
       name: "is_productive",
       label: "In Prod",
@@ -436,7 +436,7 @@ const getHistory = (id) => {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
-            <>
+            <div style={{"display":"flex", "alignItems":"center","gap":"5px"}}>
               <Link
                 component="button"
                 variant="body2"
@@ -447,10 +447,10 @@ const getHistory = (id) => {
               >
                 Edit
               </Link>
-
+                  |
               <Link
                 sx={{
-                  marginLeft: "10px",
+                  
                 }}
                 component="button"
                 variant="body2"
@@ -461,7 +461,7 @@ const getHistory = (id) => {
               >
                 Add New
               </Link>
-            </>
+            </div>
           );
         },
       },
@@ -1045,7 +1045,7 @@ const getHistory = (id) => {
             <Button
               variant="outlined"
               onClick={() => {
-                
+                  getHistory(comboHistoryData.combo_id)
               }}
             >
               History

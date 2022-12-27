@@ -20,17 +20,12 @@ function Navbar() {
             </div>
             <h2 className='navbar-head'>Serial Number Inventory</h2>
             <div className='nav-items-main'>
-         
-            <SlDropdown distance={5} className="nav-item">
-                <SlButton className='nav-item-button' slot="trigger" caret>
-                    Index
-                </SlButton>
-                <SlMenu>
-                <SlMenuItem  onClick={()=>{
+                <SlButton className='nav-item-button nav-item-alternate' caret  onClick={()=>{
                      navigate("/")
-                }}>Home</SlMenuItem>
-                </SlMenu>
-            </SlDropdown> 
+                }}>
+                    Home
+                </SlButton>
+           
             <SlDropdown distance={5} className="nav-item">
                 <SlButton className='nav-item-button' slot="trigger" caret>
                     Account
