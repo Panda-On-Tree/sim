@@ -127,9 +127,11 @@ function Serial() {
       data,
     })
       .then((res) => {
-        console.log(res);
-
-        setComboData(res.data.data.splice(0, 3));
+        console.log(res)
+        res.data?.data?.map(item=>{
+          console.log(item);
+        })
+        setComboData(res.data.data);
         if(!res.data.data?.length){
             alert("No Combo Code Found ! \n Please Create Atleast one active combo code")
             handleReset()
