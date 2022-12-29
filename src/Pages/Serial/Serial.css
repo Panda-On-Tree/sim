@@ -2,3 +2,12 @@
     margin-top: 5vh;
     margin-left: 5vw;
 }
+
+.serial-stack > *{
+    height: 25px;
+}
+
+
+.table-head-history th{
+    padding: 6px 16px !important;
+}

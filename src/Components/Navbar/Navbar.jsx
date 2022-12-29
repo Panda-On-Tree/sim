@@ -21,6 +21,11 @@ function Navbar() {
             <h2 className='navbar-head'>Serial Number Inventory</h2>
             <div className='nav-items-main'>
                 <SlButton className='nav-item-button nav-item-alternate' caret  onClick={()=>{
+                     navigate("/serial")
+                }}>
+                    Serial Gen
+                </SlButton>
+                <SlButton className='nav-item-button nav-item-alternate' caret  onClick={()=>{
                      navigate("/")
                 }}>
                     Home
