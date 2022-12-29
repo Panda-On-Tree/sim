@@ -1,6 +1,6 @@
 
 import "./App.css";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import { ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./Components/Navbar/Navbar";
@@ -11,9 +11,43 @@ import "@shoelace-style/shoelace/dist/components/icon/icon.js";
 import { setBasePath } from "@shoelace-style/shoelace/dist/utilities/base-path";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Serial from "./Pages/Serial/Serial";
+import axios from "axios";
+import { baseurl } from "./api/apiConfig";
+import { useEffect } from "react";
 setBasePath("https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/");
 
 function App() {
+
+  let navigate = useNavigate()
+
+  useEffect(()=>{
+    verifyToken()
+  })
+  const verifyToken = () => {
+    if (!localStorage.getItem('token')) {
+      return
+    }
+    axios({
+      method: 'post',
+      url: `${baseurl.base_url}/mhere/verify-token`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data)
+      })
+      .catch(function (err) {
+        console.log(err)
+        localStorage.clear()
+        localStorage.removeItem('employee_id')
+        localStorage.removeItem('token')
+        localStorage.removeItem('fullname')
+        localStorage.removeItem('email')
+        navigate('/login')
+      })
+  }
   const queryClient = new QueryClient({
     defaultOptions:{
         queries:{

@@ -34,7 +34,6 @@ function Serial() {
     product_name: "",
     model_name: "",
   });
-
   const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
@@ -412,7 +411,7 @@ function Serial() {
                             console.log(e.target.value);
                           }}
                           key={i}
-                          value={i}
+                          value={item.combo_id}
                           control={<Radio />}
                           label={`Combo Code: ${item.combo_code}, ECN No. : ${item.ecn_mjo_number},  Socket Type: ${item.socket_type}, ${item.is_rnd ? "Prod" : ""}${item.is_productive ? "R&D" : ""} `}
                         />
@@ -648,6 +647,23 @@ function Serial() {
                       variant="contained"
                       onClick={() => {
                         handleReset()
+                        setSerialGenData(
+                            {
+                                combo_id: "",
+                                plant_id: "",
+                                model_id: "",
+                                product_id: "",
+                                prodline_id: "",
+                                quantity: "",
+                                employee_id: localStorage.getItem("employee_id"),
+                            }
+                        )
+                        model_product_id.current = {
+                          model_id: "",
+                          product_id: "",
+                          product_name: "",
+                          model_name: "",
+                        }
                       }}
                       sx={{ mt: 1, mr: 1 }}
                     >
