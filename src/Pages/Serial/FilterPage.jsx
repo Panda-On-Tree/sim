@@ -260,6 +260,7 @@ function FilterPage() {
     <div className="filter-page-main">
       <div className="filter-page-input-main">
         <Autocomplete
+        size="small"
           className=""
           /* value={serialGenData.product_id} */
           onChange={(event, newValue) => {
@@ -289,6 +290,7 @@ function FilterPage() {
           )}
         />
         <Autocomplete
+        size="small"
           className=""
           onChange={(event, newValue) => {
             if (newValue?.id) {
@@ -317,6 +319,7 @@ function FilterPage() {
           )}
         />
         <Autocomplete
+        size="small"
           className=""
           onChange={(event, newValue) => {
             if (newValue) {
@@ -345,6 +348,7 @@ function FilterPage() {
           )}
         />
         <Autocomplete
+        size="small"
           className=""
           onChange={(event, newValue) => {
             if (newValue) {
@@ -372,6 +376,7 @@ function FilterPage() {
         />
         <LocalizationProvider dateAdapter={AdapterMoment}>
           <DatePicker
+          className="date-filter"
             label="Start Date"
             value={sendFilterSerialData.start_date}
             onChange={(newValue) => {
@@ -385,6 +390,7 @@ function FilterPage() {
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterMoment}>
           <DatePicker
+           className="date-filter"
             label="Start Date"
             value={sendFilterSerialData.end_date}
             onChange={(newValue) => {

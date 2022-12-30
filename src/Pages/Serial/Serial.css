@@ -21,3 +21,8 @@
     gap: 30px;
     flex-wrap: wrap;
 }
+
+
+.date-filter input{
+    height: 0.4375em
+}

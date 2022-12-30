@@ -5,6 +5,7 @@ import './Login.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { baseurl } from '../../api/apiConfig';
+import { toast } from 'react-toastify';
 
 
 
@@ -97,12 +98,15 @@ function Login() {
               })
               .catch((err)=>{
                   document.getElementById("login-button").disabled = false
+                  toast.error(err.response.data.message)
                 console.log(err);
               })
             
            
           })
           .catch(function (err) {
+            toast.error(err.response.data.message)
+
             console.log(err)
             document.getElementById("login-button").disabled = false
           })
