@@ -398,7 +398,7 @@ function FilterPage() {
         </LocalizationProvider>
         <Button
           sx={{ minWidth: "200px" }}
-          variant="outlined"
+          variant="contained"
           color="primary"
           onClick={() => {
             getFilteredData();
