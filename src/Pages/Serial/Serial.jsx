@@ -554,7 +554,7 @@ function Serial() {
                             </TableCell>
                             <TableCell align="right">{row?.series_ending}</TableCell>
                             <TableCell align="right">{row?.created_by}</TableCell>
-                            <TableCell align="right">{row?.created_at.split("T").join("  ").split(".")[0]}</TableCell>
+                            <TableCell align="right">{row?.created_at?.split("T").join("  ").split(".")[0]}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
