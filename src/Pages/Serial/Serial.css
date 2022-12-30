@@ -15,3 +15,9 @@
 .css-1hv8oq8-MuiStepLabel-label{
     font-size: 1rem !important;
 }
+
+.filter-page-input-main{
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}

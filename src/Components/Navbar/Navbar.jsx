@@ -21,27 +21,40 @@ function Navbar() {
             <h2 className='navbar-head'>Serial Number Inventory</h2>
             <div className='nav-items-main'>
             <SlButton className='nav-item-button nav-item-alternate' caret  onClick={()=>{
-                     navigate("/")
+                     navigate("/filter-serial")
                 }}>
                     Home
-                </SlButton>
-                <SlButton className='nav-item-button nav-item-alternate' caret  onClick={()=>{
-                     navigate("/serial")
-                }}>
-                    Serial Gen
                 </SlButton>
                
                 <SlDropdown distance={5} className="nav-item">
                 <SlButton className='nav-item-button' slot="trigger" caret>
                     Scanning
                 </SlButton>
-                <SlMenu>
+                {/* <SlMenu>
                 <SlMenuItem onclick={()=>{
                    
                 }}>Scan !</SlMenuItem>
                 <SlMenuItem onclick={()=>{
                    
                 }}>Scan 2</SlMenuItem>
+              
+                
+                </SlMenu> */}
+            </SlDropdown> 
+                <SlDropdown distance={5} className="nav-item">
+                <SlButton className='nav-item-button' slot="trigger" caret>
+                    Serial
+                </SlButton>
+                <SlMenu>
+                <SlMenuItem onclick={()=>{
+                   navigate("/serial")
+                }}>Serial Generation</SlMenuItem>
+                <SlMenuItem onclick={()=>{
+                   navigate("/filter-serial")
+                }}>Serial View</SlMenuItem>
+                <SlMenuItem onclick={()=>{
+                   navigate("/combo-gen")
+                }}>Combo Generation</SlMenuItem>
               
                 
                 </SlMenu>

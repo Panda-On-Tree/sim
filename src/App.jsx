@@ -14,6 +14,7 @@ import Serial from "./Pages/Serial/Serial";
 import axios from "axios";
 import { baseurl } from "./api/apiConfig";
 import { useEffect } from "react";
+import FilterPage from "./Pages/Serial/FilterPage";
 setBasePath("https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/");
 
 function App() {
@@ -78,8 +79,10 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Routes>
           <Route element={<Dashboard />}>
-            <Route exact path="/" element={localStorage.getItem("token") ? <Home /> : <Navigate replace to="/login" />}></Route>
+            <Route exact path="/" element={localStorage.getItem("token") ? <FilterPage /> : <Navigate replace to="/login" />}></Route>
+            <Route exact path="/combo-gen" element={localStorage.getItem("token") ? <Home /> : <Navigate replace to="/login" />}></Route>
             <Route exact path="/serial" element={localStorage.getItem("token") ? <Serial /> : <Navigate replace to="/login" />}></Route>
+            <Route exact path="/filter-serial" element={localStorage.getItem("token") ? <FilterPage /> : <Navigate replace to="/login" />}></Route>
           </Route>
           <Route element={<Auth />}>
             <Route exact path="/login" element={<Login />}></Route>
