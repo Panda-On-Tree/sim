@@ -108,16 +108,12 @@ function Scanning() {
         .then((res)=>{
             console.log(res);
             toast.success(res.data.message);
-            setSerialPartMapping({
-                product_id: "",
-                model_id: "",
-                serial_number: "",
-                employee_id: localStorage.getItem("employee_id"),
-            })
-            setPartLookupData([])
+            setSerialPartMapping({...serialPartMapping, serial_number:""})
+            fetchPartTemplate();
             
         })
         .catch((err)=>{
+           
             toast.error(err.response.data.message)
         })
     }
@@ -185,7 +181,7 @@ function Scanning() {
 				</Button>
 			</div>
 			<Box sx={{ border: "1px solid rgba(0, 0, 0, 0.12)", borderRadius: "10px", minHeight: "60vh", width: "80%", margin: "30px 0px 0px 0px", padding: "15px" }}>
-				{templateData?<TextField margin="dense"  sx={{ width: "400px"}} label="Serial Number" onChange={(e)=>{
+				{templateData?<TextField margin="dense" value={serialPartMapping.serial_number}  sx={{ width: "400px"}} label="Serial Number" onChange={(e)=>{
                     setSerialPartMapping({...serialPartMapping, serial_number:e.target.value})
                 }}></TextField>:null}
 				<div style={{ marginTop: "5vh" }}>
@@ -196,7 +192,11 @@ function Scanning() {
 									<Typography>Product Name : {item.product_name}</Typography>
 									<Typography>Model Name : {item.model_name} </Typography>
 								</div>
-								<TextField size="small" onChange={(e)=>{
+								<TextField value={partLookupData.filter((prop)=>{
+									if(prop.id == item.id){
+										return prop
+									}
+								})[0].serial_number} size="small" onChange={(e)=>{
                                     setPartLookupData([...partLookupData].map(object =>{
                                         if(item.id == object.id){
                                             return{
@@ -219,6 +219,7 @@ function Scanning() {
 					Send Data
 				</Button>:null}
 			</Box>
+			
 		</div>
 	);
 }
