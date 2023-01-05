@@ -95,12 +95,12 @@ function Appbar() {
                                     background: "#0000004d",    
                                                  
                                     } }}
-								/* endIcon={<KeyboardArrowDownIcon />} */
+								
 								id="basic-button"
 								aria-controls={openScanning ? "basic-menu" : undefined}
 								aria-haspopup="true"
 								aria-expanded={openScanning ? "true" : undefined}
-								onClick={()=>navigate("/scanning")}>
+								>
 								Scanning
 							</Button>
 							{/* <Menu
