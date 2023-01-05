@@ -16,6 +16,7 @@ import { baseurl } from "./api/apiConfig";
 import { useEffect } from "react";
 import FilterPage from "./Pages/Serial/FilterPage";
 import Scanning from "./Pages/Scanning/Scanning";
+import Appbar from "./Components/Appbar/appbar";
 setBasePath("https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/");
 
 function App() {
@@ -63,7 +64,8 @@ function App() {
 
   const Dashboard = () => (
     <div>
-      <Navbar />
+      <Appbar/>
+      {/* <Navbar /> */}
       <div style={{ padding: "30px 20px" }}>
         <Outlet />
       </div>

@@ -107,9 +107,10 @@ function Scanning() {
 		})
         .then((res)=>{
             console.log(res);
+            toast.success(res.data.message)
         })
         .catch((err)=>{
-            console.log(err);
+            toast.error(err.response.data.message)
         })
     }
 
@@ -176,7 +177,7 @@ function Scanning() {
 				</Button>
 			</div>
 			<Box sx={{ border: "1px solid rgba(0, 0, 0, 0.12)", borderRadius: "10px", height: "60vh", width: "80%", margin: "30px 0px 0px 0px", padding: "15px" }}>
-				<TextField size="medium" sx={{ width: "300px" }} label="Serial Number" onChange={(e)=>{
+				<TextField margin="dense"  sx={{ width: "400px"}} label="Serial Number" onChange={(e)=>{
                     setSerialPartMapping({...serialPartMapping, serial_number:e.target.value})
                 }}></TextField>
 				<div style={{ marginTop: "5vh" }}>
@@ -203,12 +204,12 @@ function Scanning() {
 						);
 					})}
 				</div>
-				<Button sx={{ marginTop: "20px" }} variant="contained" size="large" onClick={()=>{
+				{templateData?<Button sx={{ marginTop: "20px" }} variant="contained" size="large" onClick={()=>{
                     sendSerialPartMapping()
                     
                 }}>
 					Send Data
-				</Button>
+				</Button>:null}
 			</Box>
 		</div>
 	);
