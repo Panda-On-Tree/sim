@@ -15,6 +15,7 @@ import axios from "axios";
 import { baseurl } from "./api/apiConfig";
 import { useEffect } from "react";
 import FilterPage from "./Pages/Serial/FilterPage";
+import Scanning from "./Pages/Scanning/Scanning";
 setBasePath("https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/");
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
 
   useEffect(()=>{
     verifyToken()
-  })
+  },[])
   const verifyToken = () => {
     if (!localStorage.getItem('token')) {
       return
@@ -37,7 +38,7 @@ function App() {
       },
     })
       .then(function (response) {
-        console.log(response.data)
+       
       })
       .catch(function (err) {
         console.log(err)
@@ -83,6 +84,7 @@ function App() {
             <Route exact path="/combo-gen" element={localStorage.getItem("token") ? <Home /> : <Navigate replace to="/login" />}></Route>
             <Route exact path="/serial" element={localStorage.getItem("token") ? <Serial /> : <Navigate replace to="/login" />}></Route>
             <Route exact path="/filter-serial" element={localStorage.getItem("token") ? <FilterPage /> : <Navigate replace to="/login" />}></Route>
+            <Route exact path="/scanning" element={localStorage.getItem("token") ? <Scanning /> : <Navigate replace to="/login" />}></Route>
           </Route>
           <Route element={<Auth />}>
             <Route exact path="/login" element={<Login />}></Route>

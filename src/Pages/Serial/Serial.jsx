@@ -415,7 +415,7 @@ function Serial() {
                           key={i}
                           value={item.combo_id}
                           control={<Radio />}
-                          label={`Combo Code: ${item.combo_code}, ECN No. : ${item.ecn_mjo_number},  Socket Type: ${item.socket_type}, ${item.is_rnd ? "Prod" : ""}${item.is_productive ? "R&D" : ""} `}
+                          label={`Combo Code: ${item.combo_code}, ECN No. : ${item.ecn_mjo_number},  Socket Type: ${item.socket_type}, || ${item.is_rnd ? "R&D" : ""}${item.is_productive ? "Prod" : ""} `}
                         />
                       );
                     })}
