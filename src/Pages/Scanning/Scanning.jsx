@@ -107,7 +107,15 @@ function Scanning() {
 		})
         .then((res)=>{
             console.log(res);
-            toast.success(res.data.message)
+            toast.success(res.data.message);
+            setSerialPartMapping({
+                product_id: "",
+                model_id: "",
+                serial_number: "",
+                employee_id: localStorage.getItem("employee_id"),
+            })
+            setPartLookupData([])
+            
         })
         .catch((err)=>{
             toast.error(err.response.data.message)
@@ -177,9 +185,9 @@ function Scanning() {
 				</Button>
 			</div>
 			<Box sx={{ border: "1px solid rgba(0, 0, 0, 0.12)", borderRadius: "10px", minHeight: "60vh", width: "80%", margin: "30px 0px 0px 0px", padding: "15px" }}>
-				<TextField margin="dense"  sx={{ width: "400px"}} label="Serial Number" onChange={(e)=>{
+				{templateData?<TextField margin="dense"  sx={{ width: "400px"}} label="Serial Number" onChange={(e)=>{
                     setSerialPartMapping({...serialPartMapping, serial_number:e.target.value})
-                }}></TextField>
+                }}></TextField>:null}
 				<div style={{ marginTop: "5vh" }}>
 					{templateData?.map((item) => {
 						return (
