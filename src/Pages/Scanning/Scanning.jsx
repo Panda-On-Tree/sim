@@ -176,7 +176,7 @@ function Scanning() {
 					Search
 				</Button>
 			</div>
-			<Box sx={{ border: "1px solid rgba(0, 0, 0, 0.12)", borderRadius: "10px", height: "60vh", width: "80%", margin: "30px 0px 0px 0px", padding: "15px" }}>
+			<Box sx={{ border: "1px solid rgba(0, 0, 0, 0.12)", borderRadius: "10px", minHeight: "60vh", width: "80%", margin: "30px 0px 0px 0px", padding: "15px" }}>
 				<TextField margin="dense"  sx={{ width: "400px"}} label="Serial Number" onChange={(e)=>{
                     setSerialPartMapping({...serialPartMapping, serial_number:e.target.value})
                 }}></TextField>
