@@ -90,7 +90,7 @@ function Appbar() {
 							</Button>
 						</div>
 						<div>
-							<Button
+                            {JSON.parse(localStorage.getItem("module_access")).sim_scanning?<Button
 								sx={{ minWidth:"110px",color: "white",'&:hover': {
                                     background: "#0000004d",    
                                                  
@@ -100,9 +100,10 @@ function Appbar() {
 								aria-controls={openScanning ? "basic-menu" : undefined}
 								aria-haspopup="true"
 								aria-expanded={openScanning ? "true" : undefined}
-								>
+								onClick={()=>navigate("/scanning")}>
 								Scanning
-							</Button>
+							</Button>:null}
+							
 							{/* <Menu
                             
 								id="basic-menu"
@@ -141,9 +142,12 @@ function Appbar() {
 								MenuListProps={{
 									"aria-labelledby": "basic-button",
 								}}>
-								<MenuItem onClick={()=>navigate("/serial")}>Serial Generation</MenuItem>
+                                {JSON.parse(localStorage.getItem("module_access")).sim_generation?<MenuItem onClick={()=>navigate("/serial")}>Serial Generation</MenuItem>:null}
+
+								
 								<MenuItem onClick={()=>navigate("/filter-serial")}>Serial View</MenuItem>
-								<MenuItem onClick={()=>navigate("/combo-gen")}>Combo Generation</MenuItem>
+                                {JSON.parse(localStorage.getItem("module_access")).sim_combo?<MenuItem onClick={()=>navigate("/combo-gen")}>Combo Generation</MenuItem>:null}
+								
 							</Menu>
 						</div>
 						<div>
@@ -174,7 +178,7 @@ function Appbar() {
 								}}>
 								<MenuItem>{localStorage.getItem("fullname")}</MenuItem>
 								<MenuItem
-									onclick={() => {
+									onClick={() => {
 										localStorage.clear();
 										navigate("/login");
 									}}>

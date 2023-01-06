@@ -83,10 +83,10 @@ function App() {
         <Routes>
           <Route element={<Dashboard />}>
             <Route exact path="/" element={localStorage.getItem("token") ? <FilterPage /> : <Navigate replace to="/login" />}></Route>
-            <Route exact path="/combo-gen" element={localStorage.getItem("token") ? <Home /> : <Navigate replace to="/login" />}></Route>
-            <Route exact path="/serial" element={localStorage.getItem("token") ? <Serial /> : <Navigate replace to="/login" />}></Route>
+            <Route exact path="/combo-gen" element={localStorage.getItem("token") ? JSON.parse(localStorage.getItem("module_access")).sim_combo ?  <Home /> :<Navigate replace to="/filter-serial" />: <Navigate replace to="/login" />}></Route>
+            <Route exact path="/serial" element={localStorage.getItem("token") ? JSON.parse(localStorage.getItem("module_access")).sim_generation? <Serial /> :<Navigate replace to="/filter-serial" />: <Navigate replace to="/login" />}></Route>
             <Route exact path="/filter-serial" element={localStorage.getItem("token") ? <FilterPage /> : <Navigate replace to="/login" />}></Route>
-            <Route exact path="/scanning" element={localStorage.getItem("token") ? <Scanning /> : <Navigate replace to="/login" />}></Route>
+            <Route exact path="/scanning" element={localStorage.getItem("token") ? JSON.parse(localStorage.getItem("module_access")).sim_scanning?<Scanning />:<Navigate replace to="/filter-serial" /> : <Navigate replace to="/login" />}></Route>
           </Route>
           <Route element={<Auth />}>
             <Route exact path="/login" element={<Login />}></Route>

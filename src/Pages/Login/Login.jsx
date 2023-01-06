@@ -71,12 +71,12 @@ function Login() {
                 console.log(res);
          
                
-                if(res.data.data?.ceam_management){
+                if(res.data.data?.sim_module){
                   localStorage.setItem('module_access', JSON.stringify(res.data.data))
 
                   let data ={
                     employee_id:response.data.new_e_code,
-                    module_name:"Ceam"
+                    module_name:"sim"
                   }
                   axios({
                     method:"post",
