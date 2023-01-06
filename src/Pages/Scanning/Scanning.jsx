@@ -7,7 +7,7 @@ import { baseurl } from "../../api/apiConfig";
 import "./Scanning.css";
 
 function Scanning() {
-    const [focused, setFocused] = useState(1)
+	const [focused, setFocused] = useState(1);
 	const [productList, setProductList] = useState([]);
 	const [modelList, setModelList] = useState([]);
 	const [sendTempdata, setSendTempdata] = useState({
@@ -83,7 +83,7 @@ function Scanning() {
 				}
 				console.log(array);
 				setPartLookupData(array);
-                setFocused(1)
+				setFocused(1);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -111,7 +111,7 @@ function Scanning() {
 				toast.success(res.data.message);
 				setSerialPartMapping({ ...serialPartMapping, serial_number: "" });
 				fetchPartTemplate();
-                handleReset()
+				handleReset();
 			})
 			.catch((err) => {
 				toast.error(err.response.data.message);
@@ -122,17 +122,17 @@ function Scanning() {
 
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setFocused(focused+1)
+		setFocused(focused + 1);
 	};
 
 	const handleBack = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
-        setFocused(focused-1)
+		setFocused(focused - 1);
 	};
 
 	const handleReset = () => {
 		setActiveStep(0);
-        setFocused(1)
+		setFocused(1);
 	};
 
 	return (
@@ -198,102 +198,109 @@ function Scanning() {
 			</div>
 
 			<Paper elevation={4} sx={{ minHeight: "60vh", mt: 6, mb: 20 }}>
-				{templateData?<Box sx={{ maxWidth: 800, p: 5 }}>
-					<Stepper activeStep={activeStep} orientation="vertical">
-						{templateData?<Step >
-							<StepLabel>Scan Main Serial Number To Start</StepLabel>
-							<StepContent>
-								<TextField
-									value={serialPartMapping.serial_number}
-                                    autoFocus={focused == 1 ? true :false}
-                                    focused={focused == 1 ? true :false} 
-									size="small"
-									sx={{ width: "400px" , mt:3 }}
-									label="Serial Number"
-									onChange={(e) => {
-										setSerialPartMapping({ ...serialPartMapping, serial_number: e.target.value });
-                                        if(e.target.value.length === 18){
-                                            handleNext()
-                                        }
-									}}></TextField>
-								<Box sx={{ mb: 2, mt: 2 }}>
-									<div>
-										{/* <Button variant="contained" onClick={handleNext} sx={{ mt: 1, mr: 1 }}>
-											Continue
-										</Button> */}
-										<Button disabled onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
-											Back
-										</Button>
-									</div>
-								</Box>
-							</StepContent>
-						</Step>:null}
-						{templateData?.map((item, i) => {
-							return (
-								<Step key={i}>
-									<StepLabel>Scan For Model Name : {item.model_name}</StepLabel>
+				{templateData ? (
+					<Box sx={{ maxWidth: 800, p: 5 }}>
+						<Stepper activeStep={activeStep} orientation="vertical">
+							{templateData ? (
+								<Step>
+									<StepLabel>Scan Main Serial Number To Start</StepLabel>
 									<StepContent>
-										<Box display="flex" gap="40px" alignItems="center" mt={2} justifyContent="space-between" marginBottom="2vh">
-											<div>
-												<Typography sx={{color:"GrayText"}}>Product Name : {item.product_name}</Typography>
-												<Typography sx={{color:"GrayText"}}>Model Name : {item.model_name} </Typography>
-											</div>
-											<TextField
-                                                sx={{minWidth:'300px'}}
-												value={
-													partLookupData.filter((prop) => {
-														if (prop.id == item.id) {
-															return prop;
-														}
-													})[0].serial_number
+										<TextField
+											value={serialPartMapping.serial_number}
+											autoFocus={focused == 1 ? true : false}
+											focused={focused == 1 ? true : false}
+											size="small"
+											sx={{ width: "400px", mt: 3 }}
+											label="Serial Number"
+											inputProps={{ style: { textTransform: "uppercase" } }}
+											onChange={(e) => {
+												setSerialPartMapping({ ...serialPartMapping, serial_number: e.target.value });
+												if (e.target.value.length === 18) {
+													handleNext();
 												}
-                                                focused={focused == i+2? true :false}
-                                                autoFocus={focused == i+2? true :false}
-												size="small"
-												onChange={(e) => {
-													setPartLookupData(
-														[...partLookupData].map((object) => {
-															if (item.id == object.id) {
-																return {
-																	...object,
-																	serial_number: e.target.value,
-																};
-															} else return object;
-														})
-													);
-                                                    if(e.target.value.length === 18){
-                                                        handleNext()
-                                                    }
-                                                    
-												}}></TextField>
-										</Box>
+											}}></TextField>
 										<Box sx={{ mb: 2, mt: 2 }}>
 											<div>
-												<Button variant="contained" onClick={handleNext} sx={{ mt: 1, mr: 1 }}>
-													Continue
-												</Button>
-												<Button onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
+												{/* <Button variant="contained" onClick={handleNext} sx={{ mt: 1, mr: 1 }}>
+											Continue
+										</Button> */}
+												<Button disabled onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
 													Back
 												</Button>
 											</div>
 										</Box>
 									</StepContent>
 								</Step>
-							);
-						})}
-					</Stepper>
-					{activeStep === templateData?.length + 1 && (
-						<Paper square elevation={0} sx={{ p: 3 }}>
-							<Typography sx={{mb:2}}>All steps completed - you&apos;re finished</Typography>
-							<Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-								Reset
-							</Button>
-							<Button variant="contained" onClick={sendSerialPartMapping} sx={{ mt: 1, mr: 1 }}>
-								Send Data
-							</Button>
-						</Paper>
-					)}
-				</Box>:<h3 className="template-data-alter">Please Search to view Template</h3>}
+							) : null}
+							{templateData?.map((item, i) => {
+								return (
+									<Step key={i}>
+										<StepLabel>Scan For Model Name : {item.model_name}</StepLabel>
+										<StepContent>
+											<Box display="flex" gap="40px" alignItems="center" mt={2} justifyContent="space-between" marginBottom="2vh">
+												<div>
+													<Typography sx={{ color: "GrayText" }}>Product Name : {item.product_name}</Typography>
+													<Typography sx={{ color: "GrayText" }}>Model Name : {item.model_name} </Typography>
+												</div>
+												<TextField
+													sx={{ minWidth: "300px" }}
+													value={
+														partLookupData.filter((prop) => {
+															if (prop.id == item.id) {
+																return prop;
+															}
+														})[0].serial_number
+													}
+													inputProps={{ style: { textTransform: "uppercase" } }}
+													focused={focused == i + 2 ? true : false}
+													autoFocus={focused == i + 2 ? true : false}
+													size="small"
+													onChange={(e) => {
+														setPartLookupData(
+															[...partLookupData].map((object) => {
+																if (item.id == object.id) {
+																	return {
+																		...object,
+																		serial_number: e.target.value,
+																	};
+																} else return object;
+															})
+														);
+														if (e.target.value.length === 18) {
+															handleNext();
+														}
+													}}></TextField>
+											</Box>
+											<Box sx={{ mb: 2, mt: 2 }}>
+												<div>
+													<Button disabled variant="contained" onClick={handleNext} sx={{ mt: 1, mr: 1 }}>
+														Continue
+													</Button>
+													<Button onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
+														Back
+													</Button>
+												</div>
+											</Box>
+										</StepContent>
+									</Step>
+								);
+							})}
+						</Stepper>
+						{activeStep === templateData?.length + 1 && (
+							<Paper square elevation={0} sx={{ p: 3 }}>
+								<Typography sx={{ mb: 2 }}>All steps completed - you&apos;re finished</Typography>
+								<Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+									Reset
+								</Button>
+								<Button variant="contained" onClick={sendSerialPartMapping} sx={{ mt: 1, mr: 1 }}>
+									Send Data
+								</Button>
+							</Paper>
+						)}
+					</Box>
+				) : (
+					<h3 className="template-data-alter">Please Search to view Template</h3>
+				)}
 			</Paper>
 		</div>
 	);
