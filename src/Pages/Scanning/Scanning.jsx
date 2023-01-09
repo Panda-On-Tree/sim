@@ -1,5 +1,6 @@
-import { Autocomplete, Button, Paper, TextField, Typography, Box, Stepper, Step, StepLabel, StepContent } from "@mui/material";
+import { Autocomplete, Button, Paper, TextField, Typography, Box, Stepper, Step, StepLabel, StepContent, Stack, TableRow, TableCell } from "@mui/material";
 import axios from "axios";
+import MUIDataTable from "mui-datatables";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { toast } from "react-toastify";
@@ -19,10 +20,19 @@ function Scanning() {
 		product_id: "",
 		model_id: "",
 		serial_number: "",
+		plant_id: "",
+		prodline_id: "",
+		qc_incharge: "",
+		line_incharge: "",
 		employee_id: localStorage.getItem("employee_id"),
 	});
 	const [partLookupData, setPartLookupData] = useState([]);
-
+	const [plantList, setPlantList] = useState([]);
+	const [prodLineList, setProdLineList] = useState([]);
+	const [lastScanData, setLastScanData] = useState([]);
+	const [lastSignleScanData, setLastSingleScanData] = useState();
+	const [showStepper, setShowStepper] = useState(false);
+	const [lastScannedData, setLastScannedData] = useState();
 	useQuery("product-list", fetchProductList);
 	function fetchProductList() {
 		axios({
@@ -35,6 +45,86 @@ function Scanning() {
 		})
 			.then((res) => {
 				setProductList(res.data.data);
+			})
+			.catch((err) => {
+				console.log(err);
+				toast.error(err.response.data.message);
+			});
+	}
+	useQuery("plant-list", getplant);
+
+	useQuery("get-last-scans", getLastScans);
+	function getLastScans() {
+		axios({
+			method: "get",
+			url: `${baseurl.base_url}/sim/get-last-scans`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		})
+			.then((res) => {
+				console.log(res.data.data);
+				setLastScanData(res.data.data);
+			})
+			.catch((err) => {
+				console.log(err);
+				toast.error(err.response.data.message);
+			});
+	}
+
+	useQuery("get-last-single-scan", getLastSingleScans);
+	function getLastSingleScans() {
+		axios({
+			method: "get",
+			url: `${baseurl.base_url}/sim/get-last-single-scans`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		})
+			.then((res) => {
+				console.log(res.data.data);
+				setLastSingleScanData(res.data.data);
+			})
+			.catch((err) => {
+				console.log(err);
+				toast.error(err.response.data.message);
+			});
+	}
+
+	function getplant() {
+		axios({
+			method: "get",
+			url: `${baseurl.base_url}/sim/get-plant`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		})
+			.then((res) => {
+				setPlantList(res.data.data);
+			})
+			.catch((err) => {
+				toast.error(err.response.data.message);
+			});
+	}
+	function fetchProdList(value) {
+		const data = {
+			plant_id: value,
+		};
+		axios({
+			method: "post",
+			url: `${baseurl.base_url}/sim/get-prodline`,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+			data,
+		})
+			.then((res) => {
+				console.log(res.data.data);
+				setProdLineList(res.data.data);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -96,6 +186,7 @@ function Scanning() {
 		const data = serialPartMapping;
 		data.part_lookup = partLookupData;
 		console.log(data);
+		setLastScannedData(data);
 
 		axios({
 			method: "post",
@@ -110,11 +201,16 @@ function Scanning() {
 				console.log(res);
 				toast.success(res.data.message);
 				setSerialPartMapping({ ...serialPartMapping, serial_number: "" });
+
 				fetchPartTemplate();
+				getLastScans();
 				handleReset();
 			})
 			.catch((err) => {
 				toast.error(err.response.data.message);
+				setSerialPartMapping({ ...serialPartMapping, serial_number: "" });
+				fetchPartTemplate();
+				handleReset();
 			});
 	}
 
@@ -123,6 +219,11 @@ function Scanning() {
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
 		setFocused(focused + 1);
+		console.log(activeStep);
+		console.log(templateData.length);
+		if (activeStep === templateData?.length) {
+			sendSerialPartMapping();
+		}
 	};
 
 	const handleBack = () => {
@@ -135,6 +236,49 @@ function Scanning() {
 		setFocused(1);
 	};
 
+	const options = {
+		tableBodyMaxHeight: "64vh",
+		responsive: "standard",
+		selectableRowsHideCheckboxes: true,
+		sort: false,
+		rowsPerPage: 15,
+		viewColumns: false,
+		expandableRows: true,
+		expandableRowsHeader: false,
+		expandableRowsOnClick: true,
+        renderExpandableRow: (rowData, rowMeta) => {
+            const colSpan = rowData.length + 1;
+            console.log(rowMeta);
+            return (
+                <TableRow>
+                    <TableCell colSpan={colSpan}>
+                        <Stack sx={{p:2}} direction="row" spacing={2}>
+                            {lastScanData[rowMeta.dataIndex]?.child?.map((item,i)=>{
+                                return(
+                                    <Paper key={i} sx={{display:'flex', flexDirection:'column', gap:'10px', p:2, flexWrap:'wrap'}}>
+                                    <Box sx={{display:'flex', minWidth:'200px', gap:'20px', justifyContent:'space-between'}}><Typography variant="body2" >Product Name</Typography><Typography variant="body2">{item.product_name}</Typography></Box>
+                                    <Box sx={{display:'flex', minWidth:'200px', gap:'20px', justifyContent:'space-between'}}><Typography variant="body2">Model Name</Typography><Typography variant="body2">{item.model_name}</Typography></Box>
+                                    <Box sx={{display:'flex', minWidth:'200px', gap:'20px' , justifyContent:'space-between'}}><Typography variant="body2">Serial Number</Typography><Typography variant="body2">{item.serial_number}</Typography></Box>  
+                                </Paper>
+                                )
+                            })}
+                           
+                        </Stack>
+                    </TableCell>
+              </TableRow>
+            );
+          },
+	};
+	const columns = [
+		{ name: "product_name", label: "Product Name", options: { filter: true, sort: true } },
+		{ name: "model_name", label: "Model Name", options: { filter: true, sort: true } },
+		{ name: "plant_location", label: "Plant Location", options: { filter: true, sort: true } },
+		{ name: "prod_line_name", label: "ProdLine Name", options: { filter: true, sort: true } },
+		{ name: "serial_number", label: "Serial Number", options: { filter: true, sort: true } },
+		{ name: "qc_incharge", label: "QC Incharge", options: { filter: true, sort: true } },
+		{ name: "line_incharge", label: "Line Incharge", options: { filter: true, sort: true } },
+		{ name: "created_by", label: "Scanned By", options: { filter: true, sort: true } },
+	];
 	return (
 		<div>
 			<div className="home-autocomplete-input-main">
@@ -186,6 +330,52 @@ function Scanning() {
 						/>
 					)}
 				/>
+				<Autocomplete
+					className="autocomp-input"
+					onChange={(event, newValue) => {
+						if (newValue?.id) {
+							setSerialPartMapping({ ...serialPartMapping, plant_id: newValue.id });
+							fetchProdList(newValue.id);
+						}
+					}}
+					disablePortal
+					id="combo-box-demo"
+					getOptionLabel={(option) => `${option.plant_name} (${option.plant_code})`}
+					options={plantList}
+					sx={{ width: 280 }}
+					renderInput={(params) => (
+						<TextField
+							{...params}
+							label="Plant Name"
+							inputProps={{
+								...params.inputProps,
+							}}
+						/>
+					)}
+				/>
+				<Autocomplete
+					className="autocomp-input"
+					onChange={(event, newValue) => {
+						if (newValue?.id) {
+							setSerialPartMapping({ ...serialPartMapping, prodline_id: newValue.id });
+						}
+					}}
+					disablePortal
+					id="combo-box-demo"
+					getOptionLabel={(option) => `${option.prod_line_name} (${option.prod_line_code})`}
+					options={prodLineList}
+					sx={{ width: 280 }}
+					renderInput={(params) => (
+						<TextField
+							{...params}
+							label="ProdLine Name"
+							inputProps={{
+								...params.inputProps,
+							}}
+						/>
+					)}
+				/>
+
 				<Button
 					size="large"
 					style={{ width: "150px" }}
@@ -196,9 +386,51 @@ function Scanning() {
 					Search
 				</Button>
 			</div>
+			<Box sx={{ display: "flex", gap: "20px", mt: 3, flexWrap: "wrap" }}>
+				<TextField sx={{ minWidth: "300px" }} onChange={(e) => setSerialPartMapping({ ...serialPartMapping, qc_incharge: e.target.value })} size="small" label="QC Incharge"></TextField>
+				<TextField sx={{ minWidth: "300px" }} onChange={(e) => setSerialPartMapping({ ...serialPartMapping, line_incharge: e.target.value })} size="small" label="Line Incharge"></TextField>
+				<Button
+					sx={{ width: "150px" }}
+					/* disabled={()=>{
+                    if(serialPartMapping.plant_id&&serialPartMapping.prodline_id&&serialPartMapping.qc_incharge&&serialPartMapping.line_incharge){
+                        return false
+                    }
+                    return false
+                }} */ disabled={false}
+					variant="contained"
+					onClick={() => setShowStepper(true)}>
+					Save
+				</Button>
+			</Box>
 
-			<Paper elevation={4} sx={{ minHeight: "60vh", mt: 6, mb: 20 }}>
-				{templateData ? (
+			<Paper elevation={3} sx={{ minHeight: "60vh", mt: 6, mb: 10, padding: "1px", position: "relative" }}>
+				<div style={{ overflow: "hidden" }}>
+					{lastScannedData ? (
+						<Stack className="last-scans" sx={{ mt: 3, ml: 6, p: "5px", overflowX: "auto" }} direction="row" spacing={2}>
+							<Paper sx={{ p: 1 }}>
+								<Typography sx={{ minWidth: "max-content" }} variant="subtitle2">
+									Last Scanned Master Serial No :
+								</Typography>
+								<Typography sx={{ color: "rgba(0, 0, 0, 0.7)", minWidth: "max-content" }} variant="subtitle1">
+									{lastScannedData.serial_number.toUpperCase()}
+								</Typography>
+							</Paper>
+							{lastScannedData.part_lookup.map((item) => {
+								return (
+									<Paper sx={{ p: 1 }}>
+										<Typography variant="subtitle2">Part Name :</Typography>
+										<Typography sx={{ color: "rgba(0, 0, 0, 0.7)", minWidth: "max-content" }} variant="subtitle1">
+											Serial Number: {item.serial_number.toUpperCase()}
+										</Typography>
+									</Paper>
+								);
+							})}
+						</Stack>
+					) : (
+						<Typography></Typography>
+					)}
+				</div>
+				{templateData && showStepper ? (
 					<Box sx={{ maxWidth: 800, p: 5 }}>
 						<Stepper activeStep={activeStep} orientation="vertical">
 							{templateData ? (
@@ -292,9 +524,6 @@ function Scanning() {
 								<Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
 									Reset
 								</Button>
-								<Button variant="contained" onClick={sendSerialPartMapping} sx={{ mt: 1, mr: 1 }}>
-									Send Data
-								</Button>
 							</Paper>
 						)}
 					</Box>
@@ -302,6 +531,9 @@ function Scanning() {
 					<h3 className="template-data-alter">Please Search to view Template</h3>
 				)}
 			</Paper>
+			<div style={{ paddingBottom: "10vh" }} className="report-table table-ceam">
+				<MUIDataTable title={"Last Scans"} data={lastScanData} columns={columns} options={options} />
+			</div>
 		</div>
 	);
 }

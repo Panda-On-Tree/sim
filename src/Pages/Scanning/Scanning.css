@@ -5,3 +5,10 @@
     transform: translate(-50%,-50%);
 
 }
+
+.last-scans::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    display: none;
+}
+
+
