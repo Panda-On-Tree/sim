@@ -151,6 +151,7 @@ function Scanning() {
 		})
 			.then((res) => {
 				setModelList(res.data.data);
+                console.log(res.data.data);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -327,7 +328,7 @@ function Scanning() {
 					}}
 					disablePortal
 					id="combo-box-demo"
-					getOptionLabel={(option) => `${option.model_name} (${option.model_code})`}
+					getOptionLabel={(option) => `${option.model_name} (${option.model_code}) SAP-${option.sap_part_code}`}
 					options={modelList}
 					sx={{ width: 280 }}
 					renderInput={(params) => (
