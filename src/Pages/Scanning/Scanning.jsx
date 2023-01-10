@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { baseurl } from "../../api/apiConfig";
 import { debounce } from "lodash";
 import "./Scanning.css";
-
+import barcodeImg from './barcode.jpeg'
 function Scanning() {
 	//const [focused, setFocused] = useState(1);
 	const [productList, setProductList] = useState([]);
@@ -529,9 +529,11 @@ function Scanning() {
 							})}
 							<Step>
 							<StepLabel>Scan For Submit</StepLabel>
-							<StepContent>
-								<TextField
+							<StepContent >
+								<Box sx={{display:'flex', flexDirection:'column'}}>
+                                <TextField
 								size="small"
+                                sx={{width:'200px', mb:2}}
 								autoFocus={submitFocus}
 								focused={submitFocus}
 								 onChange={(e)=>{
@@ -539,6 +541,8 @@ function Scanning() {
 										sendSerialPartMapping();
 									}
 								}}></TextField>
+                                <img height='100px' width='200px' src={barcodeImg}></img>
+                                </Box>
 							</StepContent>
 							</Step>
 						</Stepper>
