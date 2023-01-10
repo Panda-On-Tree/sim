@@ -1,16 +1,19 @@
 import { Autocomplete, Button, Paper, TextField, Typography, Box, Stepper, Step, StepLabel, StepContent, Stack, TableRow, TableCell } from "@mui/material";
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
-import React, { useState } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { baseurl } from "../../api/apiConfig";
+import { debounce } from "lodash";
 import "./Scanning.css";
 
 function Scanning() {
-	const [focused, setFocused] = useState(1);
+	//const [focused, setFocused] = useState(1);
 	const [productList, setProductList] = useState([]);
 	const [modelList, setModelList] = useState([]);
+	const [submitFocus, setSubmitFocus] = useState(false);
+	const [templateDataLength, setTemplateDataLength] = useState(0);
 	const [sendTempdata, setSendTempdata] = useState({
 		product_id: "",
 		model_id: "",
@@ -34,6 +37,7 @@ function Scanning() {
 	const [showStepper, setShowStepper] = useState(false);
 	const [lastScannedData, setLastScannedData] = useState();
 	useQuery("product-list", fetchProductList);
+	const focused = useRef(1);
 	function fetchProductList() {
 		axios({
 			method: "get",
@@ -173,7 +177,8 @@ function Scanning() {
 				}
 				console.log(array);
 				setPartLookupData(array);
-				setFocused(1);
+				focused.current = 1;
+				setTemplateDataLength(array.length);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -218,22 +223,27 @@ function Scanning() {
 
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
-		setFocused(focused + 1);
+		focused.current = focused.current + 1
+		//setFocused(focused + 1);
+		console.log(focused);
 		console.log(activeStep);
-		console.log(templateData.length);
-		if (activeStep === templateData?.length) {
-			sendSerialPartMapping();
+		console.log(templateDataLength);
+		if (activeStep === templateDataLength) {
+			setSubmitFocus(true);
 		}
 	};
-
+	const handleDebounce = useCallback(debounce(handleNext, 800), [])
 	const handleBack = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
-		setFocused(focused - 1);
+		focused.current = focused.current - 1
+		//setFocused(focused - 1);
 	};
 
 	const handleReset = () => {
 		setActiveStep(0);
-		setFocused(1);
+		focused.current = 1
+		//setFocused(1);
+		setSubmitFocus(false);
 	};
 
 	const options = {
@@ -439,17 +449,18 @@ function Scanning() {
 									<StepContent>
 										<TextField
 											value={serialPartMapping.serial_number}
-											autoFocus={focused == 1 ? true : false}
-											focused={focused == 1 ? true : false}
+											autoFocus={focused.current == 1 ? true : false}
+											focused={focused.current == 1 ? true : false}
 											size="small"
 											sx={{ width: "400px", mt: 3 }}
 											label="Serial Number"
 											inputProps={{ style: { textTransform: "uppercase" } }}
 											onChange={(e) => {
 												setSerialPartMapping({ ...serialPartMapping, serial_number: e.target.value });
-												if (e.target.value.length === 18) {
+												handleDebounce();
+												/* if (e.target.value.length === 18) {
 													handleNext();
-												}
+												} */
 											}}></TextField>
 										<Box sx={{ mb: 2, mt: 2 }}>
 											<div>
@@ -484,8 +495,8 @@ function Scanning() {
 														})[0].serial_number
 													}
 													inputProps={{ style: { textTransform: "uppercase" } }}
-													focused={focused == i + 2 ? true : false}
-													autoFocus={focused == i + 2 ? true : false}
+													focused={focused.current == i + 2 ? true : false}
+													autoFocus={focused.current == i + 2 ? true : false}
 													size="small"
 													onChange={(e) => {
 														setPartLookupData(
@@ -498,9 +509,7 @@ function Scanning() {
 																} else return object;
 															})
 														);
-														if (e.target.value.length === 18) {
-															handleNext();
-														}
+														handleDebounce()
 													}}></TextField>
 											</Box>
 											<Box sx={{ mb: 2, mt: 2 }}>
@@ -517,6 +526,20 @@ function Scanning() {
 									</Step>
 								);
 							})}
+							<Step>
+							<StepLabel>Scan For Submit</StepLabel>
+							<StepContent>
+								<TextField
+								size="small"
+								autoFocus={submitFocus}
+								focused={submitFocus}
+								 onChange={(e)=>{
+									if(e.target.value == "submit"){
+										sendSerialPartMapping();
+									}
+								}}></TextField>
+							</StepContent>
+							</Step>
 						</Stepper>
 						{activeStep === templateData?.length + 1 && (
 							<Paper square elevation={0} sx={{ p: 3 }}>
