@@ -77,7 +77,7 @@ function Scanning() {
 			});
 	}
 
-	useQuery("get-last-single-scan", getLastSingleScans);
+	//useQuery("get-last-single-scan", getLastSingleScans);
 	function getLastSingleScans() {
 		axios({
 			method: "get",
