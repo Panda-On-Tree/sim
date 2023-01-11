@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import FilterPage from "./Pages/Serial/FilterPage";
 import Scanning from "./Pages/Scanning/Scanning";
 import Appbar from "./Components/Appbar/appbar";
+import { ProductiveView } from "./Pages/charts/ProductiveView";
 setBasePath("https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/");
 
 function App() {
@@ -82,17 +83,18 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <Routes>
           <Route element={<Dashboard />}>
-            <Route exact path="/" element={localStorage.getItem("token") ? <FilterPage /> : <Navigate replace to="/login" />}></Route>
+            <Route exact path="/" element={localStorage.getItem("token") ? <ProductiveView /> : <Navigate replace to="/login" />}></Route>
             <Route exact path="/combo-gen" element={localStorage.getItem("token") ? JSON.parse(localStorage.getItem("module_access")).sim_combo ?  <Home /> :<Navigate replace to="/filter-serial" />: <Navigate replace to="/login" />}></Route>
             <Route exact path="/serial" element={localStorage.getItem("token") ? JSON.parse(localStorage.getItem("module_access")).sim_generation? <Serial /> :<Navigate replace to="/filter-serial" />: <Navigate replace to="/login" />}></Route>
             <Route exact path="/filter-serial" element={localStorage.getItem("token") ? <FilterPage /> : <Navigate replace to="/login" />}></Route>
             <Route exact path="/scanning" element={localStorage.getItem("token") ? JSON.parse(localStorage.getItem("module_access")).sim_scanning?<Scanning />:<Navigate replace to="/filter-serial" /> : <Navigate replace to="/login" />}></Route>
+            <Route exact path="/productive-view" element={localStorage.getItem("token") ? JSON.parse(localStorage.getItem("module_access")).sim_scanning?<ProductiveView />:<Navigate replace to="/filter-serial" /> : <Navigate replace to="/login" />}></Route>
           </Route>
           <Route element={<Auth />}>
             <Route exact path="/login" element={<Login />}></Route>
           </Route>
         </Routes>
-        <ToastContainer position="top-right" autoClose={2000} hideProgressBar={true} closeOnClick pauseOnHover={true} draggable theme="colored" />
+        <ToastContainer limit={1} position="top-right" autoClose={2000} hideProgressBar={true} closeOnClick pauseOnHover={true} draggable theme="colored" />
       </QueryClientProvider>
     </div>
   );

@@ -84,7 +84,7 @@ function Appbar() {
 								/* endIcon={<KeyboardArrowDownIcon />} */
 
 								onClick={() => {
-									navigate("/filter-serial");
+									navigate("/");
 								}}>
 								Home
 							</Button>
