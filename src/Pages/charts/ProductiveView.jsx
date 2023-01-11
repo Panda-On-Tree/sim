@@ -209,6 +209,27 @@ export const ProductiveView = () => {
 			align: "center",
 			verticalAlign: "middle",
 		},
+        markers: {
+            size: 4,
+            colors: undefined,
+            strokeColors: '#fff',
+            strokeWidth: 2,
+            strokeOpacity: 0.9,
+            strokeDashArray: 0,
+            fillOpacity: 1,
+            discrete: [],
+            shape: "circle",
+            radius: 2,
+            offsetX: 0,
+            offsetY: 0,
+            onClick: undefined,
+            onDblClick: undefined,
+            showNullDataPoints: true,
+            hover: {
+              size: undefined,
+              sizeOffset: 3
+            }
+        }
 	};
 	const series = [
 		{
