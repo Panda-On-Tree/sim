@@ -90,7 +90,7 @@ function Appbar() {
 							</Button>
 						</div>
 						<div>
-                            {JSON.parse(localStorage.getItem("module_access")).sim_scanning?<Button
+                            {JSON.parse(localStorage.getItem("module_access"))?.sim_scanning?<Button
 								sx={{ minWidth:"110px",color: "white",'&:hover': {
                                     background: "#0000004d",    
                                                  
@@ -142,11 +142,11 @@ function Appbar() {
 								MenuListProps={{
 									"aria-labelledby": "basic-button",
 								}}>
-                                {JSON.parse(localStorage.getItem("module_access")).sim_generation?<MenuItem onClick={()=>navigate("/serial")}>Serial Generation</MenuItem>:null}
+                                {JSON.parse(localStorage.getItem("module_access"))?.sim_generation?<MenuItem onClick={()=>navigate("/serial")}>Serial Generation</MenuItem>:null}
 
 								
 								<MenuItem onClick={()=>navigate("/filter-serial")}>Serial View</MenuItem>
-                                {JSON.parse(localStorage.getItem("module_access")).sim_combo?<MenuItem onClick={()=>navigate("/combo-gen")}>Combo Generation</MenuItem>:null}
+                                {JSON.parse(localStorage.getItem("module_access"))?.sim_combo?<MenuItem onClick={()=>navigate("/combo-gen")}>Combo Generation</MenuItem>:null}
 								
 							</Menu>
 						</div>
