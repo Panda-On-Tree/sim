@@ -179,6 +179,12 @@ function Appbar() {
 								<MenuItem>{localStorage.getItem("fullname")}</MenuItem>
 								<MenuItem
 									onClick={() => {
+										window.open('https://microtek.tech/ess/forget-password', '_blank') 
+									}}>
+									Change Password
+								</MenuItem>
+								<MenuItem
+									onClick={() => {
 										localStorage.clear();
 										navigate("/login");
 									}}>

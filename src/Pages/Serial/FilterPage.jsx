@@ -391,7 +391,7 @@ function FilterPage() {
         <LocalizationProvider dateAdapter={AdapterMoment}>
           <DatePicker
            className="date-filter"
-            label="Start Date"
+            label="End Date"
             value={sendFilterSerialData.end_date}
             onChange={(newValue) => {
               setSendFilterSerialData({
