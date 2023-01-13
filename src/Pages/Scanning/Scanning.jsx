@@ -415,21 +415,23 @@ function Scanning() {
 			</Box>
 
 			<Paper elevation={3} sx={{ minHeight: "60vh", mt: 6, mb: 10, padding: "1px", position: "relative" }}>
-				<div style={{ overflow: "hidden" }}>
-					{lastScannedData ? (
+				{lastScannedData?<div style={{ overflow: "hidden" }}>
+					{lastScanData[0] ? (
 						<Stack className="last-scans" sx={{ mt: 3, ml: 6, p: "5px", overflowX: "auto" }} direction="row" spacing={2}>
 							<Paper sx={{ p: 1 }}>
 								<Typography sx={{ minWidth: "max-content" }} variant="subtitle2">
 									Last Scanned Master Serial No :
 								</Typography>
 								<Typography sx={{ color: "rgba(0, 0, 0, 0.7)", minWidth: "max-content" }} variant="subtitle1">
-									{lastScannedData.serial_number.toUpperCase()}
+									{lastScanData[0].serial_number.toUpperCase()}
 								</Typography>
 							</Paper>
-							{lastScannedData.part_lookup.map((item) => {
+							{lastScanData[0].child.map((item) => {
+								console.log(item);
 								return (
 									<Paper sx={{ p: 1 }}>
-										<Typography variant="subtitle2">Part Name :</Typography>
+										<Typography sx={{display:"inline-flex" , minWidth: "max-content"}} variant="subtitle2">Product Name : <Typography sx={{ color: "rgba(0, 0, 0, 0.7)", minWidth: "max-content" }} variant="subtitle2">{item.product_name}</Typography> </Typography>
+										<Typography sx={{display:"inline-flex" , minWidth: "max-content"}} variant="subtitle2">Model Name : <Typography sx={{ color: "rgba(0, 0, 0, 0.7)", minWidth: "max-content" }} variant="subtitle2">{item.model_name}</Typography></Typography>
 										<Typography sx={{ color: "rgba(0, 0, 0, 0.7)", minWidth: "max-content" }} variant="subtitle1">
 											Serial Number: {item.serial_number.toUpperCase()}
 										</Typography>
@@ -440,7 +442,7 @@ function Scanning() {
 					) : (
 						<Typography></Typography>
 					)}
-				</div>
+				</div>:null}
 				{templateData && showStepper ? (
 					<Box sx={{ maxWidth: 800, p: 5 }}>
 						<Stepper activeStep={activeStep} orientation="vertical">
