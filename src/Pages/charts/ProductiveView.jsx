@@ -21,8 +21,8 @@ export const ProductiveView = () => {
         plant_id:""
     });
 	const [productiveTableData, setProductiveTableData] = useState([]);
-    const [endDatevalue, setEndDatevalue] = useState("")
-    const [startDateValue, setStartDateValue] = useState("");
+    const [endDatevalue, setEndDatevalue] = useState(null)
+    const [startDateValue, setStartDateValue] = useState(null);
     const [prodColumn, setProdColumn] = useState([])
 
     useEffect(()=>{
