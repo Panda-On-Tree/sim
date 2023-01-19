@@ -359,7 +359,7 @@ function Serial() {
                     }}
                     disablePortal
                     id="combo-box-demo"
-                    getOptionLabel={(option) => `${option.model_name} (${option.model_code})`}
+                    getOptionLabel={(option) => `${option.model_name} (${option.model_code}) \n SAP-${option.sap_part_code}`}
                     options={modelList}
                     sx={{ width: 280 }}
                     renderInput={(params) => (
