@@ -17,7 +17,7 @@ function Serial() {
   const [comboData, setComboData] = useState();
   const [plantList, setPlantList] = useState([]);
   const [prodLineList, setProdLineList] = useState([]);
-
+  const [sendGenDataButton, setSendGenDataButton] = useState(false)
   const [serialGenData, setSerialGenData] = useState({
     combo_id: "",
     plant_id: "",
@@ -212,6 +212,7 @@ function Serial() {
 
   function sendGenSerialNumberList() {
     console.log(serialGenData);
+    setSendGenDataButton(true)
     axios({
       method: "post",
       url: `${baseurl.base_url}/sim/generate-serial-number-list`,
@@ -566,6 +567,7 @@ function Serial() {
                   <div>
                     <Button
                       size="small"
+                      disabled={sendGenDataButton}
                       variant="contained"
                       onClick={() => {
                         sendGenSerialNumberList();
@@ -648,6 +650,7 @@ function Serial() {
                       size="small"
                       variant="contained"
                       onClick={() => {
+                        setSendGenDataButton(false)
                         handleReset()
                         setSerialGenData(
                             {
