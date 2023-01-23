@@ -114,7 +114,12 @@ export const ProductiveView = () => {
 	function fetchGraph(value) {
         console.log("interval");
        
-
+		const data ={
+			plant_id:prodViewData.plant_id,
+			start_date:moment(startDateValue).format("YYYY-MM-DD"),
+			end_date:moment(endDatevalue).format("YYYY-MM-DD")
+		}
+		console.log(data);
 		axios({
 			method: "post",
 			url: `${baseurl.base_url}/sim/get-graph-view`,
@@ -122,11 +127,10 @@ export const ProductiveView = () => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
-			data:{
-                plant_id:value
-            }
+			data
 		    })
 			.then((res) => {
+				//console.log(res);
 				let arr = [];
 				res?.data?.data?.forEach((element) => {
                         let name_data = element.filter((item)=>{
@@ -171,7 +175,7 @@ export const ProductiveView = () => {
 			data: prodViewData,
 		})
 			.then((res) => {
-				console.log(res);
+			//	console.log(res);
                 setProdColumn(Object.keys(res.data.data[0]))
 				setProductiveTableData(res.data.data);
                 /* setTimeout(() => {
@@ -330,7 +334,7 @@ export const ProductiveView = () => {
 					onChange={(event, newValue) => {
 						if (newValue?.id) {
 							setProdViewData({ ...prodViewData, plant_id: newValue.id });
-							fetchGraph(newValue.id);
+							//fetchGraph(newValue.id);
 							fetchProdList(newValue.id);
 						}
 					}}
@@ -395,7 +399,10 @@ export const ProductiveView = () => {
 						}}
 					/>
 				</LocalizationProvider>
-				<Button sx={{minWidth:'150px'}} variant="outlined" onClick={fetchProductiveView}>
+				<Button sx={{minWidth:'150px'}}  variant="outlined" onClick={()=>{
+					fetchProductiveView()
+					fetchGraph()
+				}}>
 					Get Data
 				</Button>
 			</Box>
