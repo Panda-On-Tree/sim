@@ -116,10 +116,10 @@ export const ProductiveView = () => {
        
 		const data ={
 			plant_id:prodViewData.plant_id,
-			start_date:moment(startDateValue).format("YYYY-MM-DD"),
-			end_date:moment(endDatevalue).format("YYYY-MM-DD")
+			start_date: startDateValue?moment(startDateValue).format("YYYY-MM-DD"):"",
+			end_date: endDatevalue? moment(endDatevalue).format("YYYY-MM-DD"):""
 		}
-		console.log(data);
+		//console.log(data);
 		axios({
 			method: "post",
 			url: `${baseurl.base_url}/sim/get-graph-view`,
