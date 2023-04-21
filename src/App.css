@@ -44,7 +44,7 @@ margin: 0;
 
 
 .table-ceam *{
-  font-size: 12px;
+  font-size: 13px;
   color: black;
   font-family: 'Noto Sans', sans-serif !important;
 }
@@ -66,7 +66,7 @@ margin: 0;
 }
 
 .css-1ex1afd-MuiTableCell-root{
-  padding: 5px 4px !important;
+  padding: 8px 6px !important;
 }
 .tss-1cdcmys-MUIDataTable-responsiveBase{
   z-index: 0 !important;
@@ -86,11 +86,13 @@ margin: 0;
 .css-15wwp11-MuiTableHead-root *{
   color: rgb(44, 44, 44) !important;
   text-overflow: ellipsis;
-    white-space: break-spaces;
+   
     line-height: 10px;
-    padding: 5px 2px !important;
+    padding: 3px 2px !important;
 }
-
+.tss-1qtl85h-MUIDataTableBodyCell-root{
+  width: max-content;
+}
 
 .tss-9562fz-MUIDataTableViewCol-root {
   padding: 16px 24px 16px 24px !important;

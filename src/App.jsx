@@ -6,9 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./Components/Navbar/Navbar";
 import Home from "./Pages/Home/Home";
 import Login from "./Pages/Login/Login";
-import "@shoelace-style/shoelace/dist/themes/light.css";
-import "@shoelace-style/shoelace/dist/components/icon/icon.js";
-import { setBasePath } from "@shoelace-style/shoelace/dist/utilities/base-path";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Serial from "./Pages/Serial/Serial";
 import axios from "axios";
@@ -18,14 +15,14 @@ import FilterPage from "./Pages/Serial/FilterPage";
 import Scanning from "./Pages/Scanning/Scanning";
 import Appbar from "./Components/Appbar/appbar";
 import { ProductiveView } from "./Pages/charts/ProductiveView";
-setBasePath("https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/");
+
 
 function App() {
 
   let navigate = useNavigate()
 
   useEffect(()=>{
-    verifyToken()
+    //verifyToken()
   },[])
   const verifyToken = () => {
     if (!localStorage.getItem('token')) {

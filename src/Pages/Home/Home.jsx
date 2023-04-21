@@ -298,89 +298,7 @@ const getHistory = (id) => {
     setOpenDialog(false);
   };
 
-  const columns = [
-    {
-      field: "id",
-      headerName: "Sr. No.",
-      maxWidth: 50,
-      sortable: false,
-      renderCell: (params) => {
-        return params.id + 1;
-      },
-    },
-    { field: "product_name", headerName: "Product Name", minWidth: 120, sortable: false },
-    { field: "product_code", headerName: "Product Code", maxWidth: 60, sortable: false },
-    { field: "model_name", headerName: "Model Name", minWidth: 170, sortable: false },
-    { field: "model_code", headerName: "Model Code", maxWidth: 70, sortable: false },
-    { field: "sap_part_code", headerName: "SAP Part Code", maxWidth: 90, sortable: false },
-    { field: "combo_code", headerName: "Combo Code", maxWidth: 70, sortable: false },
-    { field: "combo_id", hide: true, headerName: "Combo ID", minWidth: 100, sortable: false },
-    { field: "socket_type", headerName: "Socket Type", minWidth: 120, sortable: false },
-    { field: "bom_type", hide: true, headerName: "Bom Type", minWidth: 150, sortable: false },
-    { field: "combo_description", headerName: "Combo Description", minWidth: 150, sortable: false },
-    { field: "ecn_mjo_number", headerName: "ECN No.", maxWidth: 70, sortable: false },
-    { field: "ecn_impl_date", headerName: "ECN Date", maxWidth: 90, sortable: false },
-    {
-      field: "is_productive",
-      headerName: "In Prod",
-      maxWidth: 60,
-      sortable: false,
-      valueFormatter: (params) => {
-        if (params.value == "1") {
-          return "True";
-        } else if (params.value == "0") {
-          return "False";
-        }
-      },
-    },
-    {
-      field: "is_rnd",
-      headerName: "R&D",
-      maxWidth: 60,
-      sortable: false,
-      valueFormatter: (params) => {
-        if (params.value == "1") {
-          return "True";
-        } else if (params.value == "0") {
-          return "False";
-        }
-      },
-    },
-    {
-      field: "edit_add_new",
-      headerName: "Edit/Add New",
-      minWidth: 120,
-      sortable: false,
-      renderCell: (params) => (
-        <>
-          <Link
-            component="button"
-            variant="body2"
-            onClick={() => {
-              setEditComboNumber({ ...editComboNumber, combo_id: params.row.combo_id });
-              setOpenEditDialog(true);
-            }}
-          >
-            Edit
-          </Link>
 
-          <Link
-            sx={{
-              marginLeft: "10px",
-            }}
-            component="button"
-            variant="body2"
-            onClick={() => {
-              setSendComboNumberData({ ...sendComboNumberData, prev_combo_id: params.row.combo_id });
-              setOpenAddNewDialog(true);
-            }}
-          >
-            Add New
-          </Link>
-        </>
-      ),
-    },
-  ];
   const columnsmui = [
     /*  {
       name: "id",
@@ -398,6 +316,8 @@ const getHistory = (id) => {
     { name: "combo_description", label: "Combo Description", options: { filter: false, sort: true } },
     { name: "ecn_mjo_number", label: "ECN No.", options: { filter: true, sort: true } },
     { name: "ecn_impl_date", label: "ECN Date", options: { filter: true, sort: true } },
+    { name: "start_serial", label: "Start Serial", options: { filter: true, sort: true } },
+    { name: "end_serial", label: "End Serial", options: { filter: true, sort: true } },
     {
       name: "is_productive",
       label: "In Prod",
@@ -429,19 +349,46 @@ const getHistory = (id) => {
       },
     },
     {
-      name: "Edit",
+      name: 'active_flag',
       label: "Edit",
       options: {
         filter: false,
         sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
+        customBodyRenderLite: (dataIndex, rowIndex) => {
+        
           return (
-            <div style={{"display":"flex", "alignItems":"center","gap":"5px"}}>
+            <div>
+              {comboData[dataIndex].active_flag && !(comboData[dataIndex].obsolete_flag)?<>
+                <Link
+                component="button"
+                variant="body2"
+                onClick={() => {
+                  setEditComboNumber({ ...editComboNumber, combo_id: comboData[dataIndex].combo_id });
+                  setOpenEditDialog(true);
+                }}
+              >
+                Edit
+              </Link> |
+              <Link
+                sx={{
+                  
+                }}
+                component="button"
+                variant="body2"
+                onClick={() => {
+                  setSendComboNumberData({ ...sendComboNumberData, prev_combo_id: comboData[dataIndex].combo_id });
+                  setOpenAddNewDialog(true);
+                }}
+              >
+                Add New
+              </Link></>:null}
+            </div>
+          /*   <div style={{"display":"flex", "alignItems":"center","gap":"5px"}}>
               <Link
                 component="button"
                 variant="body2"
                 onClick={() => {
-                  setEditComboNumber({ ...editComboNumber, combo_id: tableMeta.rowData[6] });
+                  setEditComboNumber({ ...editComboNumber, combo_id: comboData[dataIndex].combo_id });
                   setOpenEditDialog(true);
                 }}
               >
@@ -455,13 +402,13 @@ const getHistory = (id) => {
                 component="button"
                 variant="body2"
                 onClick={() => {
-                  setSendComboNumberData({ ...sendComboNumberData, prev_combo_id: tableMeta.rowData[6] });
+                  setSendComboNumberData({ ...sendComboNumberData, prev_combo_id: comboData[dataIndex].combo_id });
                   setOpenAddNewDialog(true);
                 }}
               >
                 Add New
               </Link>
-            </div>
+            </div> */
           );
         },
       },
@@ -542,6 +489,16 @@ const getHistory = (id) => {
     expandableRowsHeader: false,
     expandableRowsOnClick: true,
     rowsExpanded:rowsExpand,
+    setRowProps: (row, dataIndex, rowIndex) => {
+      if(!(comboData[dataIndex].active_flag && !(comboData[dataIndex].obsolete_flag))){
+        return{
+          style: { backgroundColor: 'rgb(225,201,201,0.3)' }
+        }
+      }
+      return {
+       
+      };
+    },
     isRowExpandable: (dataIndex, expandedRows) => {
       return false
     },
